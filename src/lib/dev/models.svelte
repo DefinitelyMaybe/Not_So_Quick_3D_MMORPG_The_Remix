@@ -1,5 +1,5 @@
 <script>
-	import { newModelData } from '../../data/models/mod.js';
+	import { modelData } from '../../data/models/mod.js';
 
 	export let selected;
 	let data = [];
@@ -7,13 +7,13 @@
 
 	$: if (selected) {
 		data = [];
-		for (const key in newModelData?.[selected]) {
-			const val = newModelData[selected][key];
+		for (const key in modelData?.[selected]) {
+			const val = modelData[selected][key];
 			data.push({ key, val });
 		}
 	}
 
-	for (const name in newModelData) {
+	for (const name in modelData) {
 		models.push(name);
 	}
 </script>
