@@ -87,7 +87,6 @@ export class ThreeInit {
       #endif`;
 
 		this.renderer.outputEncoding = THREE.sRGBEncoding;
-		this.renderer.gammaFactor = 2.2;
 		this.renderer.shadowMap.enabled = true;
 		this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 		this.renderer.setPixelRatio(window.devicePixelRatio);
