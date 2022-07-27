@@ -1,16 +1,16 @@
-import { newCharacterData } from './characters/mod.js';
-import { newPlantData } from './plants/mod.js';
-import { newRockData } from './rocks/mod.js';
-import { newTreeData } from './trees/mod.js';
-import { newWeaponData } from './weapons/mod.js';
+import { characters } from './characters.js';
+import { plants } from './plants.js';
+import { rocks } from './rocks.js';
+import { trees } from './trees.js';
+import { weapons } from './weapons.js';
 import { cloud } from './cloud.js';
 
-export const newModelData = Object.assign(
+export const modelData = Object.assign(
 	{},
 	{ cloud },
-	newCharacterData,
-	newPlantData,
-	newRockData,
-	newTreeData,
-	newWeaponData
+	characters,
+	plants,
+	rocks,
+	trees,
+	weapons
 );
