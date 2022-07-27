@@ -47,7 +47,7 @@ export class TextureAtlas {
 			});
 		}
 
-		const diffuse = new THREE.DataTexture2DArray(data, 1024, 1024, this.map[atlas].textures.length);
+		const diffuse = new THREE.DataArrayTexture(data, 1024, 1024, this.map[atlas].textures.length);
 		diffuse.format = THREE.RGBAFormat;
 		diffuse.type = THREE.UnsignedByteType;
 		diffuse.minFilter = THREE.LinearMipMapLinearFilter;
