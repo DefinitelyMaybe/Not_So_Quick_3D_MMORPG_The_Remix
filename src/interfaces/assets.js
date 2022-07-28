@@ -10,7 +10,7 @@ import {
 	deepClone,
 	cannon
 } from '../deps.js';
-import { modelData } from '../data/models/mod.js';
+import { modelData as newModelData } from '../data/models/mod.js';
 
 // Setting THREE up to cache the loaded resources
 THREE.Cache.enabled = true;
@@ -20,7 +20,7 @@ THREE.Cache.enabled = true;
  */
 export async function create(args) {
 	const { model, entity } = args;
-	const modelData = modelData[model];
+	const modelData = newModelData[model];
 	const loader = getLoaderFor(modelData.url);
 	const promises = [];
 	const textures = {};
