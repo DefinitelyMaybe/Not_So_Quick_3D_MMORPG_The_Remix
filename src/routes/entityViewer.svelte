@@ -5,19 +5,36 @@
     AmbientLight,
     Canvas,
     DirectionalLight,
-    Group,
-    HemisphereLight,
     Mesh,
     OrbitControls,
-    PerspectiveCamera
+    PerspectiveCamera,
+		Object3DInstance,
+		useLoader
   } from '@threlte/core'
-	import { GLTF } from "@threlte/extras";
-  import { spring } from 'svelte/motion'
+	import { useGltf, useGltfAnimations, GLTF } from "@threlte/extras";
+	import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 	import { modelData } from "../data/models/mod.js";
 
-	let modelURL = modelData.paladin.url
+	const loader = useLoader(OBJLoader, () => new OBJLoader())
 
-  const scale = spring(1)
+	const data = []
+	for (const obj in modelData) {
+		const {name, url} = modelData[obj]
+
+		if (url.match(/glb|gltf/g)?.length > 0) {
+			data.push({name, url})
+		}
+	}
+
+	let url = data[1].url
+	let modelURL1 = data[1].url
+	let modelURL2 = data[0].url
+
+  // Provide that store to the hook useGltfAnimations
+  // useGltfAnimations(gltf, ({ actions }) => {
+  //   actions['All Animations']?.play()
+  // })
+
 </script>
 
 <div class="relative h-full w-full">
@@ -33,10 +50,8 @@
     <DirectionalLight position={{ x: -3, y: 10, z: -10 }} intensity={0.2} />
     <AmbientLight intensity={0.2} />
 
-    <!-- Cube -->
-    <Group scale={$scale}>
-			<GLTF url={modelURL} />
-    </Group>
+    <!-- Object -->
+		<GLTF url={url} />
 
     <!-- Floor -->
     <Mesh
@@ -48,24 +63,19 @@
   </Canvas>
 	<div class="absolute top-0 h-full w-full pointer-events-none">
 		<div class="flex flex-col items-center h-full">
-			<form class="pointer-events-auto">
-				<button class="btn">hello world</button>
+			<form on:submit|preventDefault class="form-control pointer-events-auto">
+				<div>
+					<button class="btn" on:click="{()=>{url=modelURL1}}">{modelURL1}</button>
+					<button class="btn" on:click="{()=>{url=modelURL2}}">{modelURL2}</button>
+				</div>
+				<!-- <select class="input" bind:value={modelURL} on:change="{()=>{
+					let {gltf} = useGltf(modelURL)
+					}}">
+					{#each data as obj}
+						<option value="{obj.url}">{obj.name}</option>
+					{/each}
+				</select> -->
 			</form>
 		</div>
 	</div>
 </div>
-<!-- <canvas class="absolute" id="game" />
-<div class="absolute z-10">
-	<Menu on:test={test} on:test2={test2} />
-	<details class="flex flex-col" open>
-		<summary>Helpers</summary>
-		<ModelPicker
-			bind:selected={model}
-			on:change={() => {
-				world.changeModel(model);
-				obj = world.entities.get(0);
-			}}
-		/>
-		<Inspector bind:object={obj} />
-	</details>
-</div> -->
