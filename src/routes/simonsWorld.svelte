@@ -1,104 +1,17 @@
 <script>
-	import { onMount, onDestroy } from 'svelte';
-	import { World } from '../worlds/simonsWorld.js';
-	import Chat from '$lib/game/chat.svelte';
-	import HUD from '$lib/game/hud.svelte';
-	import Menu from '$lib/game/menu.svelte';
-	import Simplex from '$lib/dev/simplex.svelte';
-	import Points from '$lib/dev/poisson.svelte';
-
-	let world;
-	let chat;
-
-	// TODO-DefinitelyMaybe: focus lost could be a good, stop/start the clock/loop signal
-	let focused = false;
-
-	// let showHUD = true
-	// let showMenu = true;
-	// let showChat = true
-
-	function test() {
-		console.log(world);
-	}
-
-	function test2() {
-		console.log(world.entities.player);
-	}
-
-	onMount(() => {
-		world = new World();
-		// showHUD = true
-		world.resize();
-	});
-
-	onDestroy(() => {
-		if (world) {
-			const workers = world.terrain.builder.workers;
-			workers.forEach((worker) => {
-				worker.terminate();
-			});
-		}
-	});
+	import { Canvas } from "@threlte/core";
+	import { HTML } from "@threlte/extras";
+	import { World } from "@threlte/rapier";
+	import Scene from "$lib/scenes/simonsWorld.svelte"
 </script>
 
-<svelte:window
-	on:blur={() => {
-		focused = false;
-		world.stop();
-	}}
-	on:focus={() => {
-		focused = true;
-		world.start();
-	}}
-	on:resize={() => {
-		world.resize();
-	}}
-/>
-<svelte:body
-	on:keyup={(event) => {
-		world.input.handleKeyup(event);
-	}}
-	on:keydown={(event) => {
-		world.input.handleKeydown(event);
-	}}
-	on:pointerdown={(event) => {
-		world.input.handlePointerdown(event);
-	}}
-	on:pointerup={(event) => {
-		world.input.handlePointerup(event);
-	}} />
-
-<canvas id="game" />
-<Chat
-	bind:this={chat}
-	on:send={(e) => {
-		// TODO-DefinitelyMaybe: Send author info as well
-		const { text } = e.detail;
-		world.network.websocket.emit('chat.message', text);
-	}}
-/>
-<HUD />
-<Menu on:test={test} on:test2={test2} />
-<details>
-	<summary>Helpers</summary>
-	<Simplex />
-	<Points />
-</details>
-
-<!-- <style>
-  :global(body) {
-    width: 100%;
-    height: 100%;
-    background: black;
-    color: white;
-    margin: 0;
-    overflow: hidden;
-    font-size: x-large;
-  }
-  canvas {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    z-index: -1;
-  }
-</style> -->
+<div class="relative h-full w-full">
+	<Canvas>
+		<World>
+			<Scene/>
+			<HTML center>
+				<p>Your browser doesn't support WASM.</p>
+			</HTML>
+		</World>
+	</Canvas>
+</div>
