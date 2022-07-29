@@ -7,4 +7,5 @@
 	<!-- <a class="btn m-1" sveltekit:prefetch href="login">Login</a> -->
 	<a class="btn m-1" href="/simonsWorld">Simons World</a>
 	<a class="btn m-1" href="/entityViewer">Entity Viewer</a>
+	<a class="btn m-1" href="/repl">REPL</a>
 </main>
