@@ -1,6 +1,6 @@
-import { SimplexNoise } from '../../terrain/simplex.js';
-import { PusedoRandom } from '../../terrain/pusedoRandom.js';
-import { AdaptedPoissonDiscSample } from '../../terrain/poissonDisc.js';
+import { SimplexNoise } from '../terrain/simplex.js';
+import { PusedoRandom } from '../terrain/pusedoRandom.js';
+import { AdaptedPoissonDiscSample } from '../terrain/poissonDisc.js';
 
 /** @type {SimplexNoise} */
 let noise;

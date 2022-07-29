@@ -1,5 +1,5 @@
 <script>
-	import Vector from '../vector.svelte';
+	import Vector from '../../lib/vector.svelte';
 	export let object;
 	let props = [];
 	let selected;
