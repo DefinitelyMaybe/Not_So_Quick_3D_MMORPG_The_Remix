@@ -1,30 +1,12 @@
 <script lang="ts">
 	import {
 		DirectionalLight,
-		Group,
-		Mesh,
-		Object3DInstance,
 		PerspectiveCamera,
-		useFrame,
-		useLoader,
-		useThrelte,
 		OrbitControls
 	} from '@threlte/core'
-	import { AutoColliders, CollisionGroups, Debug } from '@threlte/rapier'
-	import { spring } from 'svelte/motion'
-	import {
-		BoxBufferGeometry,
-		EquirectangularReflectionMapping,
-		GridHelper,
-		Group as ThreeGroup,
-		Mesh as ThreeMesh,
-		MeshStandardMaterial,
-		Vector3
-	} from 'three'
-	import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
+	import { CollisionGroups, Debug } from '@threlte/rapier'
 	import Door from '../Door.svelte'
 	import Ground from '../Ground.svelte'
-	import Player from '../Player.svelte'
 </script>
 
 <PerspectiveCamera position={{ x: 10, y: 10, z: 10 }}>

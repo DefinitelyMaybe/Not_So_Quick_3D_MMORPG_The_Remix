@@ -2,7 +2,7 @@
 	import { Canvas } from "@threlte/core";
 	import { HTML } from "@threlte/extras";
 	import { World } from "@threlte/rapier";
-	import Scene from "$lib/scenes/simonsWorld.svelte"
+	import Scene from "$lib/scenes/threlteDoor.svelte"
 </script>
 
 <div class="relative h-full w-full overflow-hidden">
