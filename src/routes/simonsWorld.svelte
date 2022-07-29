@@ -5,7 +5,7 @@
 	import Scene from "$lib/scenes/simonsWorld.svelte"
 </script>
 
-<div class="relative h-full w-full">
+<div class="relative h-full w-full overflow-hidden">
 	<Canvas>
 		<World>
 			<Scene/>
