@@ -1,11 +1,9 @@
 <script lang="ts">
 	import type { RigidBody as RapierRigidBody } from '@dimforge/rapier3d-compat'
 	import { Group, Mesh, type Position, type Rotation } from '@threlte/core'
-	import { HTML } from '@threlte/extras'
 	import { AutoColliders, Collider, CollisionGroups, RigidBody } from '@threlte/rapier'
 	import { cubicIn, cubicOut } from 'svelte/easing'
 	import { tweened } from 'svelte/motion'
-	import { blur } from 'svelte/transition'
 	import {
 		BoxBufferGeometry,
 		Euler,
@@ -77,26 +75,6 @@
 			material={new MeshStandardMaterial()}
 		/>
 	</AutoColliders>
-
-	<HTML transform position={{ y: 3 }} pointerEvents={'none'}>
-		{#key open}
-			<small
-				in:blur={{
-					amount: 15,
-					duration: 300
-				}}
-				out:blur={{
-					amount: 15,
-					duration: 300
-				}}
-				class="px-2 py-1 text-white rounded-md absolute -translate-x-1/2 -translate-y-1/2"
-				class:bg-red-500={!open}
-				class:bg-green-500={open}
-			>
-				{open ? 'UNLOCKED' : 'LOCKED'}
-			</small>
-		{/key}
-	</HTML>
 
 	<!-- DOOR -->
 	<RigidBody

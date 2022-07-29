@@ -4,12 +4,16 @@
 	import {
 		AmbientLight,
 		DirectionalLight,
-		Mesh,
 		OrbitControls,
-		PerspectiveCamera
+		PerspectiveCamera,
+		useThrelte
 	} from '@threlte/core';
   import Model from "../model.svelte";
   import { modelData } from "../../data/models/mod.js";
+
+	const { scene } = useThrelte()
+
+	scene.add(new THREE.GridHelper(10,10))
 
 	const data = []
 
@@ -18,12 +22,13 @@
 
 		if (url.match(/glb|gltf/g)?.length > 0) {
 			data.push({name, url})
+			console.log(name, url, data.length-1);
 		}
 	}
 </script>
 
-<PerspectiveCamera position={{ x: 10, y: 10, z: 10 }} fov={24}>
-	<OrbitControls maxPolarAngle={DEG2RAD * 80} target={{ y: 0.5 }} />
+<PerspectiveCamera position={{ x: 0, y: 2, z: 5 }} fov={90}>
+	<OrbitControls maxPolarAngle={DEG2RAD * 80} />
 </PerspectiveCamera>
 
 <DirectionalLight shadow position={{ x: 3, y: 10, z: 10 }} />
@@ -32,11 +37,3 @@
 
 <!-- Object -->
 <Model data={data[0]}></Model>
-
-<!-- Floor -->
-<Mesh
-	receiveShadow
-	rotation={{ x: -90 * (Math.PI / 180) }}
-	geometry={new THREE.CircleBufferGeometry(3, 72)}
-	material={new THREE.MeshStandardMaterial({ side: THREE.DoubleSide, color: '#333333' })}
-/>
