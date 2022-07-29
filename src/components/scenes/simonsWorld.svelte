@@ -21,9 +21,9 @@
 		Vector3
 	} from 'three'
 	import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
-	import Door from './Door.svelte'
-	import Ground from './Ground.svelte'
-	import Player from './Player.svelte'
+	import Door from '../Door.svelte'
+	import Ground from '../Ground.svelte'
+	import Player from '../Player.svelte'
 
 	const { scene, invalidate } = useThrelte()
 
