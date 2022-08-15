@@ -3,7 +3,7 @@
 	import { AmbientLight, DirectionalLight, OrbitControls, PerspectiveCamera } from '@threlte/core';
 	import { HTML, GLTF } from '@threlte/extras';
 
-	let state = true;
+	let state = false;
 	const onClick = () => {
 		if (state) {
 			url = url1;
@@ -25,13 +25,10 @@
 <HTML position={{ y: 3 }} transform>
 	<button on:click={onClick} class="btn"> test </button>
 </HTML>
-<PerspectiveCamera position={{ z: 10, y: 5, x: 10 }} fov={30}>
+<PerspectiveCamera position={{ z: 5, y: 2.5, x: 5 }} fov={90}>
 	<OrbitControls
 		target={{ y: 0.75 }}
 		maxPolarAngle={85 * DEG2RAD}
-		minPolarAngle={20 * DEG2RAD}
-		maxAzimuthAngle={45 * DEG2RAD}
-		minAzimuthAngle={-45 * DEG2RAD}
 		enableZoom={false}
 	/>
 </PerspectiveCamera>
@@ -40,4 +37,4 @@
 
 <AmbientLight intensity={0.3} />
 
-<GLTF {url} scale={0.01} />
+<GLTF {url} scale={0.02} />
