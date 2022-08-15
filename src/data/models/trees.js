@@ -1,4 +1,4 @@
-import { THREE } from '../../deps.js';
+import { DoubleSide } from "three";
 
 export const trees = {
 	tree: {
@@ -19,7 +19,7 @@ export const trees = {
 				// wrapS: THREE.RepeatWrapping,
 				// wrapT: THREE.RepeatWrapping,
 				alphaTest: 0.5,
-				side: THREE.DoubleSide
+				side: DoubleSide
 			}
 		},
 		children: {
@@ -43,7 +43,7 @@ export const trees = {
 				// wrapS: THREE.RepeatWrapping,
 				// wrapT: THREE.RepeatWrapping,
 				alphaTest: 0.5,
-				side: THREE.DoubleSide
+				side: DoubleSide
 			}
 		},
 		children: {
