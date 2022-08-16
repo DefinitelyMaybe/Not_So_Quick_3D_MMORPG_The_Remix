@@ -36,4 +36,4 @@
 <AmbientLight intensity={0.2} />
 
 <!-- Object -->
-<Model data={data[0]}></Model>
+<Model data={data[3]}></Model>
