@@ -1,6 +1,6 @@
 <script>
   import { Canvas } from "@threlte/core";
-  import Scene from "$lib/scenes/repl-changeURL.svelte";
+  import Scene from "$lib/scenes/repl-animation-three.svelte";
 </script>
 
 <div class="relative h-full w-full">
@@ -15,3 +15,12 @@
 		</div>
 	</div>
 </div>
+
+<!-- <style>
+  div {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    background-color: blueviolet;
+  }
+</style> -->
