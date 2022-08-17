@@ -15,7 +15,7 @@
   const width = 100
   const height = 100
 
-  const geometry = new PlaneBufferGeometry(100, 100, 20, 20)
+  const geometry = new PlaneBufferGeometry(width, height, 10, 10)
   const G = Math.pow(2, -persistence);
   const relativeScale = Math.pow(width, -scale / 100);
 
