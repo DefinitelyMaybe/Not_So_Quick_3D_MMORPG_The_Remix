@@ -8,7 +8,7 @@
 	import { CollisionGroups, Debug, AutoColliders } from '@threlte/rapier'
 	import Door from '../Door.svelte'
 	import Ground from '../Ground.svelte'
-	import Player from "../Player.svelte";
+	import Player from "../characters/Player.svelte";
 
 	let playerMesh
 </script>
