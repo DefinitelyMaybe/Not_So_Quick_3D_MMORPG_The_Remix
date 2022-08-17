@@ -39,6 +39,7 @@
 		"@threlte/core": "^4.3.2",
 		"@threlte/extras": "^4.3.0",
 		"@threlte/rapier": "^0.3.2",
+		"simplex-noise": "^4.0.0",
 		"three": "^0.143.0"
 	}
 }
