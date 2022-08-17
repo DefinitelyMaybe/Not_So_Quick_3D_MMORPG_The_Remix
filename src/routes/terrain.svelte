@@ -3,6 +3,7 @@
   import { HTML } from "@threlte/extras";
 	import { World } from "@threlte/rapier";
 	import Scene from '$lib/scenes/terrainExample.svelte';
+  import Simplex from "$lib/dev/simplex.svelte";
 
   let gui
 
@@ -28,6 +29,7 @@
   <div class="absolute top-0 h-full w-full pointer-events-none">
 		<div class="flex h-full">
 			<div class="pointer-events-auto">
+        <Simplex/>
 				<button class="btn m-2" on:click={()=>{
           const cam = gui.getCamera()
           console.log(cam.position);
