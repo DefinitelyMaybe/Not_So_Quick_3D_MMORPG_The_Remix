@@ -9,4 +9,5 @@
 	<a class="btn m-1" sveltekit:prefetch href="/repl">REPL</a>
 	<a class="btn m-1" sveltekit:prefetch href="/animation">animation</a>
 	<a class="btn m-1" sveltekit:prefetch href="/terrain">terrain</a>
+	<a class="btn m-1" sveltekit:prefetch href="/terrainV2">Character on Terrain</a>
 </main>
