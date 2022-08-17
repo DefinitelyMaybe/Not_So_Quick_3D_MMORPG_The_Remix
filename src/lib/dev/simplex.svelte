@@ -1,6 +1,7 @@
 <script>
 	// using this persons work as reference
 	// https://github.com/lencinhaus/canvas-noise/tree/gh-pages
+	import simplexWorker from "./simplexWorker?worker";
 	import { onMount, onDestroy } from 'svelte';
 
 	/** @type {HTMLCanvasElement} */
@@ -48,7 +49,7 @@
 	onMount(() => {
 		context = canvas.getContext('2d');
 		imageData = context.createImageData(canvas.width, canvas.height);
-		worker = new Worker('./src/ui/dev/simplexWorker.js', { type: 'module' });
+		worker = new simplexWorker();
 		worker.onmessage = (message) => {
 			imageData = message.data.imageData;
 			context.putImageData(message.data.imageData, 0, 0);
