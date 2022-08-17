@@ -1,12 +1,16 @@
 <script lang="ts">
+	import { BoxBufferGeometry, MeshStandardMaterial } from "three";
 	import {
 		DirectionalLight,
 		PerspectiveCamera,
-		OrbitControls
+		OrbitControls, Mesh
 	} from '@threlte/core'
-	import { CollisionGroups, Debug } from '@threlte/rapier'
+	import { CollisionGroups, Debug, AutoColliders } from '@threlte/rapier'
 	import Door from '../Door.svelte'
 	import Ground from '../Ground.svelte'
+	import Player from "../Player.svelte";
+
+	let playerMesh
 </script>
 
 <PerspectiveCamera position={{ x: 10, y: 10, z: 10 }}>
@@ -30,6 +34,31 @@
 	All physically interactive stuff should be on group 0
 -->
 <CollisionGroups groups={[0]}>
-	<!-- <Player bind:playerMesh position={{ z: -3, y: 2 }} /> -->
+	<Player bind:playerMesh={playerMesh} position={{ z: -3, y: 2 }} />
 	<Door />
+	<!-- WALLS -->
+	<AutoColliders shape={'cuboid'}>
+		<Mesh
+			receiveShadow
+			castShadow
+			position={{ y: 1.275, x: 30 + 0.7 + 0.15 }}
+			geometry={new BoxBufferGeometry(60, 2.55, 0.15)}
+			material={new MeshStandardMaterial({
+				transparent: true,
+				opacity: 0.5,
+				color: 0x333333
+			})}
+		/>
+		<Mesh
+			receiveShadow
+			castShadow
+			position={{ y: 1.275, x: -30 - 0.7 - 0.15 }}
+			geometry={new BoxBufferGeometry(60, 2.55, 0.15)}
+			material={new MeshStandardMaterial({
+				transparent: true,
+				opacity: 0.5,
+				color: 0x333333
+			})}
+		/>
+	</AutoColliders>
 </CollisionGroups>
