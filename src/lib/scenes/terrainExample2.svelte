@@ -7,7 +7,7 @@
 	import { CollisionGroups, Debug } from '@threlte/rapier'
   import Terrain from '../Terrain.svelte'
 	import Door from '../Door.svelte'
-  import Player from "../Player.svelte";
+  import Player from "../characters/Player.svelte";
 
   let mesh
   let cam
@@ -21,10 +21,10 @@
 
 <Debug />
 
-<PerspectiveCamera bind:camera={cam} position={{ x: 72, y: 80, z: 81 }}>
+<PerspectiveCamera bind:camera={cam} lookAt={mesh} position={{ x: 16, y: 17, z: 16 }}>
 	<OrbitControls />
 </PerspectiveCamera>
-<DirectionalLight shadow position={{ y: 20, x: 8, z: -3 }} />
+<DirectionalLight position={{ y: 20, x: 8, z: -3 }} />
 
 <!--
 	The ground needs to be on both group 15 which is the group
@@ -40,6 +40,6 @@
 	All physically interactive stuff should be on group 0
 -->
 <CollisionGroups groups={[0]}>
-	<!-- <Player bind:playerMesh={mesh} position={{ z: -3, y: 2 }} /> -->
-	<Door />
+	<Player bind:playerMesh={mesh} position={{ y: 10 }} />
+	<Door position={{y:5}}/>
 </CollisionGroups>
