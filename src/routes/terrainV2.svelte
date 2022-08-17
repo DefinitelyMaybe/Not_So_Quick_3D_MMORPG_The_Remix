@@ -6,8 +6,6 @@
   import Simplex from "$lib/dev/simplex.svelte";
 
   let gui
-
-  $: console.log(gui);
 </script>
 
 <div class="relative h-full w-full overflow-hidden">
