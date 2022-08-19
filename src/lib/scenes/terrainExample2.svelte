@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { DirectionalLight } from '@threlte/core';
+	import { AmbientLight, DirectionalLight } from '@threlte/core';
 	import { CollisionGroups, Debug } from '@threlte/rapier';
 	import Terrain from '../Terrain.svelte';
 	import Door from '../Door.svelte';
@@ -17,6 +17,7 @@
 <Debug />
 
 <DirectionalLight shadow position={{ y: 20, x: 8, z: -3 }} />
+<AmbientLight intensity={0.2} />
 
 <!--
 	The ground needs to be on both group 15 which is the group
