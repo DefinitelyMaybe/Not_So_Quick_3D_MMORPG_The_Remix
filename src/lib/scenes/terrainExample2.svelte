@@ -1,30 +1,22 @@
 <script lang="ts">
-	import {
-		DirectionalLight,
-		PerspectiveCamera,
-		OrbitControls
-	} from '@threlte/core'
-	import { CollisionGroups, Debug } from '@threlte/rapier'
-  import Terrain from '../Terrain.svelte'
-	import Door from '../Door.svelte'
-  import Player from "../characters/Player.svelte";
+	import { DirectionalLight } from '@threlte/core';
+	import { CollisionGroups, Debug } from '@threlte/rapier';
+	import Terrain from '../Terrain.svelte';
+	import Door from '../Door.svelte';
+	import Player from '../characters/PlayerV2.svelte';
 
-  let mesh
-  let cam
+	let cam = undefined;
 
-  export const gui = {
-    getCamera(){
-      return cam
-    }
-  }
+	export const gui = {
+		getCamera() {
+			return cam;
+		}
+	};
 </script>
 
 <Debug />
 
-<PerspectiveCamera bind:camera={cam} lookAt={mesh} position={{ x: 16, y: 17, z: 16 }}>
-	<OrbitControls />
-</PerspectiveCamera>
-<DirectionalLight position={{ y: 20, x: 8, z: -3 }} />
+<DirectionalLight shadow position={{ y: 20, x: 8, z: -3 }} />
 
 <!--
 	The ground needs to be on both group 15 which is the group
@@ -40,6 +32,6 @@
 	All physically interactive stuff should be on group 0
 -->
 <CollisionGroups groups={[0]}>
-	<Player bind:playerMesh={mesh} position={{ y: 10 }} />
-	<Door position={{y:5}}/>
+	<Player bind:cam position={{ y: 9 }} />
+	<Door position={{ y: 5 }} />
 </CollisionGroups>
