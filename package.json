@@ -15,7 +15,7 @@
 	"devDependencies": {
 		"@playwright/test": "^1.22.2",
 		"@sveltejs/adapter-auto": "next",
-		"@sveltejs/kit": "next",
+		"@sveltejs/kit": "1.0.0-next.405",
 		"@tailwindcss/forms": "^0.5.2",
 		"autoprefixer": "^10.4.7",
 		"daisyui": "^2.20.0",
@@ -31,7 +31,7 @@
 		"svelte-preprocess": "^4.10.7",
 		"tailwindcss": "^3.1.6",
 		"typescript": "^4.7.4",
-		"vite": "^3.0.0"
+		"vite": "^3.0.9"
 	},
 	"type": "module",
 	"dependencies": {
