@@ -1,0 +1,38 @@
+<script>
+	import { Canvas } from '@threlte/core';
+  import { HTML } from "@threlte/extras";
+	import { World } from "@threlte/rapier";
+	import Scene from '$lib/scenes/terrainExample3.svelte';
+  import Simplex from "$lib/dev/simplex.svelte";
+
+  let gui
+</script>
+
+<div class="relative h-full w-full overflow-hidden">
+	<Canvas>
+    <World>
+      <Scene bind:gui/>
+      <HTML transform center slot="fallback">
+				<p>Your browser doesn't support WASM.</p>
+			</HTML>
+    </World>
+	</Canvas>
+	<div class="absolute top-0 h-full w-full pointer-events-none">
+		<div class="flex flex-col items-center h-full">
+			<div class="pointer-events-auto">
+				<a class="btn m-2" href="/">return</a>
+			</div>
+		</div>
+	</div>
+  <div class="absolute top-0 h-full w-full pointer-events-none">
+		<div class="flex h-full">
+			<div class="pointer-events-auto">
+        <Simplex/>
+				<button class="btn m-2" on:click={()=>{
+          const cam = gui.getCamera()
+          console.log(cam.position);
+        }}>test</button>
+			</div>
+		</div>
+	</div>
+</div>
