@@ -5,9 +5,9 @@
 	import { createEventDispatcher } from 'svelte';
 	import { Collider, CollisionGroups, RigidBody } from '@threlte/rapier';
 
-	export let position = undefined;
-	export let cam
+	export let cam = undefined
 	export let camRotation = [0, 0, 0];
+	export let position = undefined;
 	export let height = 1.7;
 	export let radius = 0.3;
 	export let speed = 1;
@@ -16,6 +16,9 @@
 	export let groundCollisionGroups = [15];
 	
 	let rigidBody;
+	
+	export let minDistance = 5
+	export let maxDistance = 10
 	let followDistance = 10
 
 	const { renderer } = useThrelte();
@@ -107,8 +110,8 @@
 <PerspectiveCamera bind:camera={cam} position={{ x: 6, y: 14, z: 5 }}>
 	<OrbitControls
 		target={position}
-		minDistance={1}
-		maxDistance={10}
+		{minDistance}
+		{maxDistance}
 		on:change={() => {
 			const camEuler = cam.rotation.clone();
 			camEuler.reorder('YXZ');

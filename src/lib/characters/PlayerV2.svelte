@@ -120,7 +120,7 @@
 	speed={6}
 	radius={0.3}
 	height={1.8}
-	jumpStrength={2}
+	jumpStrength={4}
 	playerCollisionGroups={[0]}
 	groundCollisionGroups={[15]}
 	bind:cam
