@@ -1,22 +1,18 @@
 <script>
 	import { createEventDispatcher, onDestroy } from 'svelte';
 	import { Camera } from 'three';
-	import { PointerLockControls as ThreePointerLockControls } from 'three/examples/jsm/controls/PointerLockControls';
+	import { PointerLockControls as ThreePointerLockControls } from './remixcontrols.js'//'three/examples/jsm/controls/PointerLockControls';
 	import {
-		useFrame,
 		useThrelte,
 		DisposableObject,
-		HierarchicalObject,
-		TransformableObject,
 		useParent
 	} from '@threlte/core';
-	import { onMount } from 'svelte';
 
 	// import { getThrelteUserData } from '../lib/getThrelteUserData'
 
 	export let maxPolarAngle = 0;
 	export let minPolarAngle = Math.PI;
-	// export let rotateSpeed = 1
+	export let pointerSpeed = 1;
 	export let dispose = undefined;
 
 	const parent = useParent();
@@ -41,17 +37,14 @@
 	const controlsLocked = () => dispatch('lock');
 	const controlsUnlocked = () => dispatch('unlock');
 
-	export let controls = undefined;
+	export const controls = new ThreePointerLockControls($parent, renderer.domElement);
 	// getThrelteUserData($parent).orbitControls = controls
 
-	onMount(() => {
-		controls = new ThreePointerLockControls($parent, document.body);
-		controls.addEventListener('change', onChange);
-		controls.addEventListener('start', onStart);
-		controls.addEventListener('end', onEnd);
-		controls.addEventListener('lock', controlsLocked);
-		controls.addEventListener('unlock', controlsUnlocked);
-	});
+	controls.addEventListener('change', onChange);
+	controls.addEventListener('start', onStart);
+	controls.addEventListener('end', onEnd);
+	controls.addEventListener('lock', controlsLocked);
+	controls.addEventListener('unlock', controlsUnlocked);
 
 	onDestroy(() => {
 		// if ($parent) {
@@ -67,11 +60,9 @@
 	$: if (controls) {
 		if (maxPolarAngle !== undefined) controls.maxPolarAngle = maxPolarAngle;
 		if (minPolarAngle !== undefined) controls.minPolarAngle = minPolarAngle;
-		// if (rotateSpeed !== undefined) controls.rotateSpeed = rotateSpeed
+		if (pointerSpeed !== undefined) controls.pointerSpeed = pointerSpeed;
 		invalidate('OrbitControls: props changed');
 	}
 </script>
 
 <DisposableObject {dispose} object={controls} />
-
-<TransformableObject object={$parent} />
