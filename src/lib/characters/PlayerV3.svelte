@@ -1,7 +1,7 @@
 <script>
 	import { GLTF, useGltfAnimations, HTML } from '@threlte/extras';
 	import { modelData } from '../../data/models/mod.js';
-	import PlayerController from '../controllers/FreeFlyController.svelte';
+	import PlayerController from '../controllers/FirstPersonController.svelte';
 
 	export let position = undefined;
 	export let cam = undefined;

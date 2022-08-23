@@ -1,15 +1,18 @@
 <script>
 	import { Euler, Vector3 } from 'three';
-	import { useFrame, useThrelte, PerspectiveCamera } from '@threlte/core';
-	import { AutoColliders, RigidBody } from '@threlte/rapier';
+	import { DEG2RAD } from 'three/src/math/MathUtils.js';
+	import { useFrame, useThrelte, PerspectiveCamera, Group } from '@threlte/core';
+	import { RigidBody, CollisionGroups, Collider } from '@threlte/rapier';
 	import { createEventDispatcher, onDestroy } from 'svelte';
 	import PointerLockControls from '../controls/PointerLockControlsRemix.svelte';
 
 	export let cam = undefined;
 	export let camRotation = [0, 0, 0];
 	export let position = { x: 0, y: 0, z: 0 };
-	$: console.log(position);
-
+	export let playerCollisionGroups = [0];
+	export let groundCollisionGroups = [15];
+	export let radius = 0.3;
+	export let height = 1.7;
 	export let speed = 1;
 	export let jumpStrength = 3;
 
@@ -108,12 +111,32 @@
 
 <svelte:window on:keydown|preventDefault={onKeyDown} on:keyup|preventDefault={onKeyUp} />
 
-<PerspectiveCamera bind:camera={cam} bind:position>
-	<PointerLockControls bind:lock />
+<PerspectiveCamera bind:camera={cam} bind:position fov={90}>
+	<PointerLockControls bind:lock on:change={()=>{
+		const camEuler = cam.rotation.clone();
+			camEuler.reorder('YXZ');
+			camEuler.x = 0;
+			camEuler.y += DEG2RAD * 180
+			camRotation = [...camEuler];
+	}} />
 </PerspectiveCamera>
 
-<RigidBody>
-	<AutoColliders shape={'cuboid'}>
+<RigidBody bind:rigidBody {position} enabledRotations={[false, false, false]}>
+	<CollisionGroups groups={playerCollisionGroups}>
+		<Collider shape={'capsule'} args={[height / 2 - radius, radius]} />
+	</CollisionGroups>
+
+	<CollisionGroups groups={groundCollisionGroups}>
+		<Collider
+			sensor
+			on:sensorenter={() => (grounded = true)}
+			on:sensorexit={() => (grounded = false)}
+			shape={'ball'}
+			args={[radius * 1.2]}
+			position={{ y: -height / 2 + radius }} />
+	</CollisionGroups>
+
+	<Group position={{ y: -height / 2 }} visible={false}>
 		<slot />
-	</AutoColliders>
+	</Group>
 </RigidBody>
