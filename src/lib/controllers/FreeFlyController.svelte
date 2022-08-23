@@ -1,18 +1,21 @@
 <script>
 	import { Euler, Vector3 } from 'three';
 	import { DEG2RAD } from 'three/src/math/MathUtils.js';
-	import { useFrame, useThrelte, PerspectiveCamera, OrbitControls } from '@threlte/core';
-	import { createEventDispatcher } from 'svelte';
+	import { useFrame, useThrelte, PerspectiveCamera } from '@threlte/core';
+	import { AutoColliders } from "@threlte/rapier";
+	import { createEventDispatcher, onDestroy } from 'svelte';
 	import PointerLockControls from "../controls/PointerLockControls.svelte";
 
 	export let cam = undefined
 	export let camRotation = [0, 0, 0];
-	export let position = undefined;
-	
+	export let position = {x:0, y:0, z:0};
+	$: console.log(position);
+
 	export let speed = 1;
 	export let jumpStrength = 3;
 	
 	let rigidBody;
+	let controls;
 
 	const { renderer } = useThrelte();
 	if (!renderer) throw new Error();
@@ -30,6 +33,13 @@
 
 	let grounded = false;
 	$: grounded ? dispatch('groundenter') : dispatch('groundexit');
+	const lockControls = () => controls.lock()
+
+	renderer.domElement.addEventListener('click', lockControls)
+
+	onDestroy(() => {
+		renderer.domElement.removeEventListener('click', lockControls)
+	})
 
 	useFrame(() => {
 		if (!rigidBody) return;
@@ -100,6 +110,10 @@
 
 <svelte:window on:keydown|preventDefault={onKeyDown} on:keyup|preventDefault={onKeyUp} />
 
-<PerspectiveCamera bind:camera={cam} position={{ x: 6, y: 14, z: 5 }}>
-	<PointerLockControls />
+<PerspectiveCamera bind:camera={cam} bind:position>
+	<PointerLockControls bind:controls />
 </PerspectiveCamera>
+
+<AutoColliders shape={'cuboid'}>
+	<slot/>
+</AutoColliders>
