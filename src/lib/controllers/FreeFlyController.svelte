@@ -1,21 +1,20 @@
 <script>
 	import { Euler, Vector3 } from 'three';
-	import { DEG2RAD } from 'three/src/math/MathUtils.js';
 	import { useFrame, useThrelte, PerspectiveCamera } from '@threlte/core';
-	import { AutoColliders } from "@threlte/rapier";
+	import { AutoColliders, RigidBody } from '@threlte/rapier';
 	import { createEventDispatcher, onDestroy } from 'svelte';
-	import PointerLockControls from "../controls/PointerLockControls.svelte";
+	import PointerLockControls from '../controls/PointerLockControlsRemix.svelte';
 
-	export let cam = undefined
+	export let cam = undefined;
 	export let camRotation = [0, 0, 0];
-	export let position = {x:0, y:0, z:0};
+	export let position = { x: 0, y: 0, z: 0 };
 	$: console.log(position);
 
 	export let speed = 1;
 	export let jumpStrength = 3;
-	
+
 	let rigidBody;
-	let controls;
+	let lock;
 
 	const { renderer } = useThrelte();
 	if (!renderer) throw new Error();
@@ -33,21 +32,20 @@
 
 	let grounded = false;
 	$: grounded ? dispatch('groundenter') : dispatch('groundexit');
-	const lockControls = () => controls.lock()
+	const lockControls = () => lock();
 
-	renderer.domElement.addEventListener('click', lockControls)
+	renderer.domElement.addEventListener('click', lockControls);
 
 	onDestroy(() => {
-		renderer.domElement.removeEventListener('click', lockControls)
-	})
+		renderer.domElement.removeEventListener('click', lockControls);
+	});
 
 	useFrame(() => {
 		if (!rigidBody) return;
 		// get direction
 		const velVec = t.fromArray([keys.left - keys.right, 0, keys.forward - keys.backward]);
 		// sort rotate and multiply by speed
-		velVec.applyEuler(new Euler().fromArray(camRotation))
-			.multiplyScalar(speed);
+		velVec.applyEuler(new Euler().fromArray(camRotation)).multiplyScalar(speed);
 		// don't override falling velocity
 		const linVel = rigidBody.linvel();
 		t.y = linVel.y;
@@ -56,7 +54,7 @@
 
 		// when body position changes update position prop for camera
 		const pos = rigidBody.translation();
-		position = {x:pos.x, y:pos.y, z:pos.z}
+		position = { x: pos.x, y: pos.y, z: pos.z };
 	});
 
 	/**
@@ -111,9 +109,11 @@
 <svelte:window on:keydown|preventDefault={onKeyDown} on:keyup|preventDefault={onKeyUp} />
 
 <PerspectiveCamera bind:camera={cam} bind:position>
-	<PointerLockControls bind:controls />
+	<PointerLockControls bind:lock />
 </PerspectiveCamera>
 
-<AutoColliders shape={'cuboid'}>
-	<slot/>
-</AutoColliders>
+<RigidBody>
+	<AutoColliders shape={'cuboid'}>
+		<slot />
+	</AutoColliders>
+</RigidBody>
