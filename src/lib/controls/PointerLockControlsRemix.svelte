@@ -1,10 +1,7 @@
 <script>
 	import { createEventDispatcher, onDestroy } from 'svelte';
 	import { Euler, Camera } from 'three';
-	import {
-		useThrelte,
-		useParent
-	} from '@threlte/core';
+	import { useThrelte, useParent } from '@threlte/core';
 
 	// Set to constrain the pitch of the camera
 	// Range is 0 to Math.PI radians
@@ -15,31 +12,31 @@
 	let isLocked = false;
 
 	const { renderer, invalidate } = useThrelte();
-  const domElement = renderer.domElement;
-  const camera = useParent();
-  const dispatch = createEventDispatcher();
+	const domElement = renderer.domElement;
+	const camera = useParent();
+	const dispatch = createEventDispatcher();
 
-  const _euler = new Euler(0, 0, 0, 'YXZ');
+	const _euler = new Euler(0, 0, 0, 'YXZ');
 	const _PI_2 = Math.PI / 2;
 
-	if (!renderer)
+	if (!renderer) {
 		throw new Error('Threlte Context missing: Is <PointerLockControls> a child of <Canvas>?');
-
+	}
 	if (!($camera instanceof Camera)) {
 		throw new Error('Parent missing: <PointerLockControls> need to be a child of a <Camera>');
 	}
 
 	const onChange = () => {
-    invalidate('PointerLockcontrols: change event')
-    dispatch('change')
-  };
+		invalidate('PointerLockcontrols: change event');
+		dispatch('change');
+	};
 
-  export const lock = () => domElement.requestPointerLock();
-  export const unlock = () => document.exitPointerLock();
+	export const lock = () => domElement.requestPointerLock();
+	export const unlock = () => document.exitPointerLock();
 
 	domElement.addEventListener('mousemove', onMouseMove);
-  domElement.ownerDocument.addEventListener('pointerlockchange', onPointerlockChange);
-  domElement.ownerDocument.addEventListener('pointerlockerror', onPointerlockError);
+	domElement.ownerDocument.addEventListener('pointerlockchange', onPointerlockChange);
+	domElement.ownerDocument.addEventListener('pointerlockerror', onPointerlockError);
 
 	onDestroy(() => {
 		domElement.removeEventListener('mousemove', onMouseMove);
@@ -47,13 +44,13 @@
 		domElement.ownerDocument.removeEventListener('pointerlockerror', onPointerlockError);
 	});
 
-  /** 
-   * @param {MouseEvent} event
-   */
+	/**
+	 * @param {MouseEvent} event
+	 */
 	function onMouseMove(event) {
 		if (!isLocked) return;
 
-		const {movementX, movementY } = event
+		const { movementX, movementY } = event;
 
 		_euler.setFromQuaternion($camera.quaternion);
 
