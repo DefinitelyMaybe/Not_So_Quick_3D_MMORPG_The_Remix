@@ -1,9 +1,10 @@
 <script>
 	import { createEventDispatcher, onDestroy } from 'svelte';
-	import { Euler, Camera, Vector3 } from 'three';
-	import { useThrelte, useParent, useFrame } from '@threlte/core';
+	import { Euler, Camera, Vector3, MeshStandardMaterial, SphereBufferGeometry } from 'three';
+	import { DEG2RAD } from 'three/src/math/MathUtils';
+	import { useThrelte, useParent, useFrame, Mesh } from '@threlte/core';
 
-  export let position
+	export let position;
 	export let minPolarAngle = 0;
 	export let maxPolarAngle = Math.PI;
 
@@ -14,12 +15,14 @@
 
 	const currentPosition = new Vector3();
 	const currentLookAt = new Vector3();
+	let tempVec = new Vector3(-1, 1, -3)
 
 	let isLocked = false;
 
 	const dispatch = createEventDispatcher();
 
-	const tempEuler = new Euler(0, 0, 0, 'YXZ');
+	const tempEuler = new Euler(0, 0, 0);
+
 	const _PI_2 = Math.PI / 2;
 
 	const { renderer, invalidate } = useThrelte();
@@ -41,7 +44,7 @@
 	export const lock = () => domElement.requestPointerLock();
 	export const unlock = () => document.exitPointerLock();
 
-  domElement.addEventListener('mousemove', onMouseMove);
+	domElement.addEventListener('mousemove', onMouseMove);
 	domElement.ownerDocument.addEventListener('pointerlockchange', onPointerlockChange);
 	domElement.ownerDocument.addEventListener('pointerlockerror', onPointerlockError);
 
@@ -52,20 +55,21 @@
 	});
 
 	useFrame((_, delta) => {
-    // the object's position is bound to the prop
-    if (position) {
-      // console.log("hello");
-      const offset = vectorFromObject(idealOffset);
-      const lookAt = vectorFromObject(idealLookAt);
+		// the object's position is bound to the prop
+		if (position) {
+			const offset = vectorFromObject(idealOffset);
+			const lookAt = vectorFromObject(idealLookAt);
 
-      const t = 1.0 - Math.pow(0.001, delta);
+			const t = 1.0 - Math.pow(0.001, delta);
 
-      currentPosition.lerp(offset, t);
-      currentLookAt.lerp(lookAt, t);
+			currentPosition.lerp(offset, t);
+			currentLookAt.lerp(lookAt, t);
 
-      $camera.position.copy(currentPosition);
-      $camera.lookAt(currentLookAt); 
-    }
+			$camera.position.copy(currentPosition);
+			$camera.lookAt(currentLookAt);
+
+			tempVec.applyEuler(new Euler(0, DEG2RAD*10, 0))
+		}
 	});
 
 	/**
@@ -105,15 +109,23 @@
 	/**
 	 * @param {{x:number,y:number,z:number}} vec
 	 */
-	function vectorFromObject(vec, object) {
+	export function vectorFromObject(vec) {
 		const { x, y, z } = vec;
 		const ideal = new Vector3(x, y, z);
-    if (isLocked) {
-      // console.log("locked");
-      ideal.applyEuler(tempEuler);
-    // console.log(position); 
-    }
+		if (isLocked) {
+			// console.log("locked");
+			tempEuler.x = 0;
+			tempEuler.y *= 0.1;
+			tempEuler.z = 0;
+			ideal.applyEuler(tempEuler);
+			// console.log(position);
+		}
 		ideal.add(new Vector3(position.x, position.y, position.z));
 		return ideal;
 	}
 </script>
+
+<Mesh
+	geometry={new SphereBufferGeometry(0.1, 5, 5)}
+	material={new MeshStandardMaterial({ color: 'purple' })}
+	position={tempVec} />

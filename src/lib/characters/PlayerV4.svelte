@@ -1,7 +1,7 @@
 <script>
-	import { Euler, Vector3 } from 'three';
+	import { Euler, Vector3, SphereBufferGeometry, MeshStandardMaterial } from 'three';
 	import { DEG2RAD } from 'three/src/math/MathUtils.js';
-	import { useFrame, useThrelte, PerspectiveCamera, Group } from '@threlte/core';
+	import { useFrame, useThrelte, PerspectiveCamera, Group, Mesh } from '@threlte/core';
 	import { RigidBody, CollisionGroups, Collider } from '@threlte/rapier';
 	import { GLTF, useGltfAnimations, HTML } from '@threlte/extras';
 	import { modelData } from '../../data/models/mod.js';
@@ -39,6 +39,10 @@
 		left: 0,
 		right: 0
 	};
+
+	const tempVec = new Vector3(1, 1, 3)
+	tempVec.applyEuler(new Euler(0, 1, 0))
+	console.log(tempVec);
 
 	let rigidBody;
 
@@ -154,11 +158,12 @@
 		bind:position
 		bind:lock
 		on:change={() => {
-			const camEuler = cam.rotation.clone();
-			camEuler.reorder('YXZ');
-			camEuler.x = 0;
-			camEuler.y += DEG2RAD * 180;
-			camRotation = [...camEuler];
+			// console.log(cam.position.sub(new Vector3(position.x, position.y, position.z)));
+			// const camEuler = cam.rotation.clone();
+			// camEuler.reorder('YXZ');
+			// camEuler.x = 0;
+			// camEuler.y += DEG2RAD * 180;
+			// camRotation = [...camEuler];
 		}} />
 </PerspectiveCamera>
 
@@ -179,6 +184,25 @@
 
 	<Group position={{ y: -height / 2 }}>
 		<GLTF {url} receiveShadow castShadow bind:scene bind:gltf={$gltf}>
+			<Mesh
+				geometry={new SphereBufferGeometry(0.1, 5, 5)}
+				material={new MeshStandardMaterial({ color: 'red' })}
+				position={{ x: 0, y: 1, z: 5 }} />
+			<Mesh
+				geometry={new SphereBufferGeometry(0.1, 5, 5)}
+				material={new MeshStandardMaterial({ color: 'green' })}
+				position={{ x: -1, y: 2, z: -3 }} />
+			<Mesh
+				geometry={new SphereBufferGeometry(0.1, 5, 5)}
+				material={new MeshStandardMaterial({ color: 'blue' })} />
+			<Mesh
+				geometry={new SphereBufferGeometry(0.1, 5, 5)}
+				material={new MeshStandardMaterial({ color: 'black' })}
+				position={{ x: 1, y: 1, z: 3 }} />
+			<Mesh
+				geometry={new SphereBufferGeometry(0.1, 5, 5)}
+				material={new MeshStandardMaterial({ color: 'grey' })}
+				position={tempVec} />
 			<HTML center transform distanceFactor={2} position={{ y: 2.2 }} lookAt={cam}>
 				<button
 					class="btn"
