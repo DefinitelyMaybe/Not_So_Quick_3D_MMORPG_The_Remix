@@ -4,7 +4,6 @@
 	import { useFrame, useThrelte, PerspectiveCamera, Group, Mesh } from '@threlte/core';
 	import { RigidBody, CollisionGroups, Collider } from '@threlte/rapier';
 	import { GLTF, useGltfAnimations, HTML } from '@threlte/extras';
-	import { modelData } from '../../data/models/mod.js';
 	import { createEventDispatcher, onDestroy } from 'svelte';
 	import Controller from '../controls/ThirdPersonControls.svelte';
 
@@ -18,15 +17,17 @@
 	export let speed = 1;
 	export let jumpStrength = 3;
 
-	const { name, url } = modelData.paladin;
+	const name = 'Xbot';
+	const url = 'https://threejs.org/examples/models/gltf/Xbot.glb';
 	const { gltf, actions } = useGltfAnimations(({ actions }) => {
 		// socerer actions: Armature|mixamo.com|Layer0, Attack, Dance, Death, Idle, Run, Walk
 		// paladin actions: Attack, Dance, Death, Idle, Run, Walk
 		// zombie actions: Attack, Death, Idle, Walk
+		// Xbot actions: agree, headShake, idle, run, sad_pose, sneak_pose, walk
 		actions[currentAction]?.play();
 	});
 	let scene;
-	let currentAction = 'Idle';
+	let currentAction = 'idle';
 
 	let movementKeysDown = 0;
 	let forward = false;
@@ -40,8 +41,8 @@
 		right: 0
 	};
 
-	const tempVec = new Vector3(1, 1, 3)
-	tempVec.applyEuler(new Euler(0, 1, 0))
+	const tempVec = new Vector3(1, 1, 3);
+	tempVec.applyEuler(new Euler(0, 1, 0));
 	console.log(tempVec);
 
 	let rigidBody;
@@ -195,14 +196,6 @@
 			<Mesh
 				geometry={new SphereBufferGeometry(0.1, 5, 5)}
 				material={new MeshStandardMaterial({ color: 'blue' })} />
-			<Mesh
-				geometry={new SphereBufferGeometry(0.1, 5, 5)}
-				material={new MeshStandardMaterial({ color: 'black' })}
-				position={{ x: 1, y: 1, z: 3 }} />
-			<Mesh
-				geometry={new SphereBufferGeometry(0.1, 5, 5)}
-				material={new MeshStandardMaterial({ color: 'grey' })}
-				position={tempVec} />
 			<HTML center transform distanceFactor={2} position={{ y: 2.2 }} lookAt={cam}>
 				<button
 					class="btn"
