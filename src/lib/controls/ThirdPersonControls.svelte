@@ -115,7 +115,7 @@
 		if (isLocked) {
 			// console.log("locked");
 			tempEuler.x = 0;
-			tempEuler.y *= 0.1;
+			// tempEuler.y *= 0.1;
 			tempEuler.z = 0;
 			ideal.applyEuler(tempEuler);
 			// console.log(position);
@@ -124,8 +124,3 @@
 		return ideal;
 	}
 </script>
-
-<Mesh
-	geometry={new SphereBufferGeometry(0.1, 5, 5)}
-	material={new MeshStandardMaterial({ color: 'purple' })}
-	position={tempVec} />
