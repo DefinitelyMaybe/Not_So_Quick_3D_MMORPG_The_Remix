@@ -3,7 +3,7 @@
   import { HTML } from "@threlte/extras";
 	import { World } from "@threlte/rapier";
 	import Scene from '$lib/scenes/Example4.svelte';
-  import Simplex from "$lib/dev/simplex.svelte";
+  // import Simplex from "$lib/dev/simplex.svelte";
 
   let gui
 </script>
@@ -27,11 +27,13 @@
   <div class="absolute top-0 h-full w-full pointer-events-none">
 		<div class="flex h-full">
 			<div class="pointer-events-auto">
-        <Simplex/>
 				<button class="btn m-2" on:click={()=>{
           const cam = gui.getCamera()
           console.log(cam);
         }}>test</button>
+				<button class="btn m-2" on:click={()=>{
+          console.log("hello world");
+        }}>test2</button>
 			</div>
 		</div>
 	</div>
