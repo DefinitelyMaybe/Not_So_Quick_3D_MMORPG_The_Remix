@@ -1,6 +1,6 @@
 <script>
 	import { Vector3 } from 'three';
-	import { useFrame, useThrelte, PerspectiveCamera, Group } from '@threlte/core';
+	import { useFrame, useThrelte, PerspectiveCamera } from '@threlte/core';
 	import { RigidBody, CollisionGroups, Collider } from '@threlte/rapier';
 	import { createEventDispatcher, onDestroy } from 'svelte';
 	import PointerLockControls from '../controls/PointerLockControlsRemix.svelte';
