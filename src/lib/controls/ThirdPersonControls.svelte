@@ -1,33 +1,38 @@
 <script>
 	import { createEventDispatcher, onDestroy } from 'svelte';
-	import { Euler, Camera, Vector3, MeshStandardMaterial, SphereBufferGeometry } from 'three';
-	import { DEG2RAD } from 'three/src/math/MathUtils';
-	import { useThrelte, useParent, useFrame, Mesh } from '@threlte/core';
+	import {
+		Camera,
+		Vector2,
+		Vector3,
+		Quaternion
+	} from 'three';
+	import { useThrelte, useParent, useFrame } from '@threlte/core';
 
 	export let position;
-	export let minPolarAngle = 0;
-	export let maxPolarAngle = Math.PI;
-
-	export let pointerSpeed = 1.0;
+	export let object = undefined;
+	export let rotateSpeed = 1.0;
 
 	export let idealOffset = { x: -1, y: 2, z: -3 };
 	export let idealLookAt = { x: 0, y: 1, z: 5 };
 
 	const currentPosition = new Vector3();
 	const currentLookAt = new Vector3();
-	let tempVec = new Vector3(-1, 1, -3)
 
-	let isLocked = false;
+	let isOrbiting = false;
+	let pointerDown = false;
 
-	const dispatch = createEventDispatcher();
-
-	const tempEuler = new Euler(0, 0, 0);
-
-	const _PI_2 = Math.PI / 2;
+	const rotateStart = new Vector2();
+	const rotateEnd = new Vector2();
+	const rotateDelta = new Vector2();
+	
+	const axis = new Vector3(0,1,0)
+	const rotationQuat = new Quaternion()
 
 	const { renderer, invalidate } = useThrelte();
 	const domElement = renderer.domElement;
 	const camera = useParent();
+
+	const dispatch = createEventDispatcher();
 
 	if (!renderer)
 		throw new Error('Threlte Context missing: Is <PointerLockControls> a child of <Canvas>?');
@@ -36,90 +41,87 @@
 		throw new Error('Parent missing: <PointerLockControls> need to be a child of a <Camera>');
 	}
 
-	const onChange = () => {
-		invalidate('PointerLockcontrols: change event');
-		dispatch('change');
-	};
-
-	export const lock = () => domElement.requestPointerLock();
-	export const unlock = () => document.exitPointerLock();
-
-	domElement.addEventListener('mousemove', onMouseMove);
-	domElement.ownerDocument.addEventListener('pointerlockchange', onPointerlockChange);
-	domElement.ownerDocument.addEventListener('pointerlockerror', onPointerlockError);
+	domElement.addEventListener('pointerdown', onPointerDown);
+	domElement.addEventListener('pointermove', onPointerMove);
+	domElement.addEventListener('pointerleave', onPointerLeave);
+	domElement.addEventListener('pointerup', onPointerUp);
 
 	onDestroy(() => {
-		domElement.removeEventListener('mousemove', onMouseMove);
-		domElement.ownerDocument.removeEventListener('pointerlockchange', onPointerlockChange);
-		domElement.ownerDocument.removeEventListener('pointerlockerror', onPointerlockError);
+		domElement.removeEventListener('pointerdown', onPointerDown);
+		domElement.removeEventListener('pointermove', onPointerMove);
+		domElement.removeEventListener('pointerleave', onPointerLeave);
+		domElement.removeEventListener('pointerup', onPointerUp);
 	});
 
+	// This is basically your update function
 	useFrame((_, delta) => {
 		// the object's position is bound to the prop
-		if (position) {
-			const offset = vectorFromObject(idealOffset);
-			const lookAt = vectorFromObject(idealLookAt);
+		if (!position || !object) return;
 
-			const t = 1.0 - Math.pow(0.001, delta);
+		// camera is based on character so we rotation character first
+		rotationQuat.setFromAxisAngle(axis, -rotateDelta.x * rotateSpeed * delta)
+		object.quaternion.multiply(rotationQuat)
 
-			currentPosition.lerp(offset, t);
-			currentLookAt.lerp(lookAt, t);
+		// then we calculate our ideal's
+		const offset = vectorFromObject(idealOffset);
+		const lookAt = vectorFromObject(idealLookAt);
 
-			$camera.position.copy(currentPosition);
-			$camera.lookAt(currentLookAt);
+		// and how far we should move towards them
+		const t = 1.0 - Math.pow(0.001, delta);
+		currentPosition.lerp(offset, t);
+		currentLookAt.lerp(lookAt, t);
 
-			tempVec.applyEuler(new Euler(0, DEG2RAD*10, 0))
-		}
+		// then finally set the camera
+		$camera.position.copy(currentPosition);
+		$camera.lookAt(currentLookAt);
 	});
 
-	/**
-	 * @param {MouseEvent} event
-	 */
-	function onMouseMove(event) {
-		if (!isLocked) return;
-
-		const { movementX, movementY } = event;
-
-		tempEuler.setFromQuaternion($camera.quaternion);
-
-		tempEuler.y += movementX * 0.002 * pointerSpeed;
-		tempEuler.x += movementY * 0.002 * pointerSpeed;
-
-		tempEuler.x = Math.max(_PI_2 - maxPolarAngle, Math.min(_PI_2 - minPolarAngle, tempEuler.x));
-
-		// $camera.quaternion.setFromEuler(tempEuler);
-
-		onChange();
-	}
-
-	function onPointerlockChange() {
-		if (document.pointerLockElement === domElement) {
-			dispatch('lock');
-			isLocked = true;
-		} else {
-			dispatch('unlock');
-			isLocked = false;
+	/** @param {PointerEvent} event */
+	function onPointerMove(event) {
+		const { x, y } = event;
+		if (pointerDown && !isOrbiting) {
+			// calculate distance from init down
+			const distCheck =
+				Math.sqrt(Math.pow(x - rotateStart.x, 2) + Math.pow(y - rotateStart.y, 2)) >
+				10;
+			if (distCheck) {
+				isOrbiting = true;
+			}
 		}
+		if (!isOrbiting) return;
+
+		rotateEnd.set(x, y);
+		rotateDelta.subVectors(rotateEnd, rotateStart).multiplyScalar(rotateSpeed);
+		rotateStart.copy(rotateEnd);
+
+		invalidate('PointerLockcontrols: change event');
+		dispatch('change');
 	}
 
-	function onPointerlockError() {
-		console.error('THREE.PointerLockControls: Unable to use Pointer Lock API');
+	/** @param {PointerEvent} event */
+	function onPointerDown(event) {
+		const { x, y } = event;
+		rotateStart.set(x, y);
+		pointerDown = true;
 	}
 
-	/**
-	 * @param {{x:number,y:number,z:number}} vec
-	 */
-	export function vectorFromObject(vec) {
+	function onPointerUp() {
+		rotateDelta.set(0,0)
+		pointerDown = false;
+		isOrbiting = false;
+	}
+
+	function onPointerLeave() {
+		rotateDelta.set(0,0)
+		pointerDown = false;
+		isOrbiting = false;
+	}
+
+	/** @param {{x:number,y:number,z:number}} vec */
+	function vectorFromObject(vec) {
 		const { x, y, z } = vec;
 		const ideal = new Vector3(x, y, z);
-		if (isLocked) {
-			// console.log("locked");
-			tempEuler.x = 0;
-			// tempEuler.y *= 0.1;
-			tempEuler.z = 0;
-			ideal.applyEuler(tempEuler);
-			// console.log(position);
-		}
+		ideal.applyQuaternion(object.quaternion)
 		ideal.add(new Vector3(position.x, position.y, position.z));
 		return ideal;
 	}

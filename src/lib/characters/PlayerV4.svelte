@@ -1,10 +1,9 @@
 <script>
 	import { Euler, Vector3, SphereBufferGeometry, MeshStandardMaterial } from 'three';
-	import { DEG2RAD } from 'three/src/math/MathUtils.js';
 	import { useFrame, useThrelte, PerspectiveCamera, Group, Mesh } from '@threlte/core';
 	import { RigidBody, CollisionGroups, Collider } from '@threlte/rapier';
 	import { GLTF, useGltfAnimations, HTML } from '@threlte/extras';
-	import { createEventDispatcher, onDestroy } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 	import Controller from '../controls/ThirdPersonControls.svelte';
 
 	export let cam = undefined;
@@ -19,6 +18,7 @@
 
 	const name = 'Xbot';
 	const url = 'https://threejs.org/examples/models/gltf/Xbot.glb';
+
 	const { gltf, actions } = useGltfAnimations(({ actions }) => {
 		// socerer actions: Armature|mixamo.com|Layer0, Attack, Dance, Death, Idle, Run, Walk
 		// paladin actions: Attack, Dance, Death, Idle, Run, Walk
@@ -29,25 +29,12 @@
 	let scene;
 	let currentAction = 'idle';
 
-	let movementKeysDown = 0;
-	let forward = false;
-	let backward = false;
-	let left = false;
-	let right = false;
-	const keys = {
-		forward: 0,
-		backward: 0,
-		left: 0,
-		right: 0
-	};
-
-	const tempVec = new Vector3(1, 1, 3);
-	tempVec.applyEuler(new Euler(0, 1, 0));
-	console.log(tempVec);
+	let forward = 0;
+	let backward = 0;
+	let left = 0;
+	let right = 0;
 
 	let rigidBody;
-
-	let lock;
 
 	// Set rotation in scene load
 	$: if (camRotation && scene) {
@@ -62,18 +49,11 @@
 
 	let grounded = false;
 	$: grounded ? dispatch('groundenter') : dispatch('groundexit');
-	const lockControls = () => lock?.();
-
-	renderer.domElement.addEventListener('click', lockControls);
-
-	onDestroy(() => {
-		renderer.domElement.removeEventListener('click', lockControls);
-	});
 
 	useFrame(() => {
 		if (!rigidBody) return;
 		// get direction
-		const velVec = temp.fromArray([keys.left - keys.right, 0, keys.forward - keys.backward]);
+		const velVec = temp.fromArray([left - right, 0, forward - backward]);
 		// sort rotate and multiply by speed
 		velVec.applyEuler(new Euler().fromArray(camRotation)).multiplyScalar(speed);
 		// don't override falling velocity
@@ -87,22 +67,20 @@
 		position = { x: pos.x, y: pos.y, z: pos.z };
 	});
 
-	/**
-	 * @param {KeyboardEvent} e
-	 */
+	/** @param {KeyboardEvent} e */
 	function onKeyDown(e) {
 		switch (e.key) {
 			case 's':
-				keys.backward = 1;
+				backward = 1;
 				break;
 			case 'w':
-				keys.forward = 1;
+				forward = 1;
 				break;
 			case 'a':
-				keys.left = 1;
+				left = 1;
 				break;
 			case 'd':
-				keys.right = 1;
+				right = 1;
 				break;
 			case ' ':
 				if (!rigidBody || !grounded) break;
@@ -113,22 +91,20 @@
 		}
 	}
 
-	/**
-	 * @param {KeyboardEvent} e
-	 */
+	/** @param {KeyboardEvent} e */
 	function onKeyUp(e) {
 		switch (e.key) {
 			case 's':
-				keys.backward = 0;
+				backward = 0;
 				break;
 			case 'w':
-				keys.forward = 0;
+				forward = 0;
 				break;
 			case 'a':
-				keys.left = 0;
+				left = 0;
 				break;
 			case 'd':
-				keys.right = 0;
+				right = 0;
 				break;
 			default:
 				break;
@@ -154,18 +130,8 @@
 
 <svelte:window on:keydown|preventDefault={onKeyDown} on:keyup|preventDefault={onKeyUp} />
 
-<PerspectiveCamera bind:camera={cam} bind:position fov={90}>
-	<Controller
-		bind:position
-		bind:lock
-		on:change={() => {
-			// console.log(cam.position.sub(new Vector3(position.x, position.y, position.z)));
-			// const camEuler = cam.rotation.clone();
-			// camEuler.reorder('YXZ');
-			// camEuler.x = 0;
-			// camEuler.y += DEG2RAD * 180;
-			// camRotation = [...camEuler];
-		}} />
+<PerspectiveCamera bind:camera={cam} position={{x:10, y:10, z:10}} fov={90}>
+	<Controller bind:position bind:object={scene} />
 </PerspectiveCamera>
 
 <RigidBody bind:rigidBody {position} enabledRotations={[false, false, false]}>
