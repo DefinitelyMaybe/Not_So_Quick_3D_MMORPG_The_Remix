@@ -125,4 +125,34 @@
 		ideal.add(new Vector3(position.x, position.y, position.z));
 		return ideal;
 	}
+
+	/** @param {KeyboardEvent} event */
+	function onKeyDown(event) {
+		switch (event.key) {
+			case 'a':
+				rotateDelta.x = -2 * rotateSpeed
+				break;
+			case 'd':
+				rotateDelta.x = 2 * rotateSpeed
+				break;
+			default:
+				break;
+		}
+	}
+
+	/** @param {KeyboardEvent} event */
+	function onKeyUp(event) {
+		switch (event.key) {
+			case 'a':
+				rotateDelta.x = 0
+				break;
+			case 'd':
+				rotateDelta.x = 0
+				break;
+			default:
+				break;
+		}
+	}
 </script>
+
+<svelte:window on:keydown={onKeyDown} on:keyup={onKeyUp}/>
