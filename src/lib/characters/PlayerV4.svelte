@@ -89,6 +89,10 @@
 			default:
 				break;
 		}
+
+		if (forward + backward > 0) {
+			transitionTo('run', 0.2);
+		}
 	}
 
 	/** @param {KeyboardEvent} e */
@@ -108,6 +112,10 @@
 				break;
 			default:
 				break;
+		}
+
+		if (forward + backward == 0) {
+			transitionTo('idle', 0.2);
 		}
 	}
 
