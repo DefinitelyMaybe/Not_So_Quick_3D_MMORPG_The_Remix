@@ -7,14 +7,13 @@
 	import Controller from '../controls/ThirdPersonControls.svelte';
 
 	export let cam = undefined;
-	export let camRotation = [0, 0, 0];
 	export let position = { x: 0, y: 0, z: 0 };
 	export let playerCollisionGroups = [0];
 	export let groundCollisionGroups = [15];
 	export let radius = 0.3;
 	export let height = 1.7;
-	export let speed = 1;
-	export let jumpStrength = 3;
+	export let speed = 6;
+	export let jumpStrength = 4;
 
 	const name = 'Xbot';
 	const url = 'https://threejs.org/examples/models/gltf/Xbot.glb';
@@ -36,11 +35,6 @@
 
 	let rigidBody;
 
-	// Set rotation in scene load
-	$: if (camRotation && scene) {
-		scene.rotation.set(camRotation[0], camRotation[1], camRotation[2]);
-	}
-
 	const { renderer } = useThrelte();
 	if (!renderer) throw new Error();
 
@@ -51,11 +45,17 @@
 	$: grounded ? dispatch('groundenter') : dispatch('groundexit');
 
 	useFrame(() => {
-		if (!rigidBody) return;
+		if (!rigidBody || !scene) return;
 		// get direction
-		const velVec = temp.fromArray([left - right, 0, forward - backward]);
+		const velVec = temp.fromArray([0, 0, forward - backward]);// left - right
+
+		// // update camera is based on character so we rotation character first
+		// rotationQuat.setFromAxisAngle(axis, -rotateDelta.x * rotateSpeed * delta)
+		// object.quaternion.multiply(rotationQuat)
+
 		// sort rotate and multiply by speed
-		velVec.applyEuler(new Euler().fromArray(camRotation)).multiplyScalar(speed);
+		velVec.applyEuler(new Euler().copy(scene.rotation)).multiplyScalar(speed);
+
 		// don't override falling velocity
 		const linVel = rigidBody.linvel();
 		temp.y = linVel.y;
@@ -128,9 +128,9 @@
 	}
 </script>
 
-<svelte:window on:keydown|preventDefault={onKeyDown} on:keyup|preventDefault={onKeyUp} />
+<svelte:window on:keydown={onKeyDown} on:keyup={onKeyUp} />
 
-<PerspectiveCamera bind:camera={cam} position={{x:10, y:10, z:10}} fov={90}>
+<PerspectiveCamera bind:camera={cam} {position} fov={90}>
 	<Controller bind:position bind:object={scene} />
 </PerspectiveCamera>
 
