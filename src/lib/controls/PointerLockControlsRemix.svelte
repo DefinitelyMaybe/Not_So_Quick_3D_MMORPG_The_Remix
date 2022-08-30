@@ -27,7 +27,7 @@
 	}
 
 	const onChange = () => {
-		invalidate('PointerLockcontrols: change event');
+		invalidate('PointerLockcontrolsRemix: change event');
 		dispatch('change');
 	};
 
@@ -75,6 +75,6 @@
 	}
 
 	function onPointerlockError() {
-		console.error('THREE.PointerLockControls: Unable to use Pointer Lock API');
+		console.error('PointerLockControlsRemix: Unable to use Pointer Lock API');
 	}
 </script>
