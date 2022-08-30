@@ -1,7 +1,6 @@
 <script>
-	import { Euler, Vector3, SphereBufferGeometry, MeshStandardMaterial } from 'three';
+	import { SphereBufferGeometry, MeshStandardMaterial, MOUSE } from 'three';
 	import {
-		useFrame,
 		useThrelte,
 		PerspectiveCamera,
 		Group,
@@ -10,7 +9,6 @@
 	} from '@threlte/core';
 	import { RigidBody, CollisionGroups, Collider } from '@threlte/rapier';
 	import { GLTF, useGltfAnimations, HTML } from '@threlte/extras';
-	import { createEventDispatcher } from 'svelte';
 
 	export let cam = undefined;
 	export let position = { x: 0, y: 0, z: 0 };
@@ -38,9 +36,6 @@
 
 	const { renderer } = useThrelte();
 	if (!renderer) throw new Error();
-
-	const temp = new Vector3();
-	const dispatch = createEventDispatcher();
 
 	/** @param {KeyboardEvent} e */
 	function onKeyDown(e) {
@@ -94,7 +89,7 @@
 <svelte:window on:keydown|preventDefault={onKeyDown} on:keyup|preventDefault={onKeyUp} />
 
 <PerspectiveCamera bind:camera={cam} position={{ x: 2, y: 5.8, z: 3.3 }} fov={60}>
-	<OrbitControls screenSpacePanning={false} target={position} enableRotate={false} />
+	<OrbitControls screenSpacePanning={false} target={position} enableRotate={false} mouseButtons={{LEFT:MOUSE.RIGHT,MIDDLE:MOUSE.MIDDLE,RIGHT:MOUSE.RIGHT}} />
 </PerspectiveCamera>
 
 <RigidBody bind:rigidBody {position} enabledRotations={[false, false, false]}>
