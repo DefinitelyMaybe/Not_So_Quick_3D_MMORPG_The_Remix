@@ -9,8 +9,9 @@
 	<a class="btn m-1" href="/repl">REPL - reactive URL</a>
 	<a class="btn m-1" href="/animation">animation</a>
 	<a class="btn m-1" href="/terrain">terrain</a>
-	<a class="btn m-1" href="/terrainV2">Character on Terrain</a>
-	<a class="btn m-1" href="/terrainV3">Pointer Controls</a>
-	<a class="btn m-1" href="/characterV4">Third Person Controls remix</a>
+	<a class="btn m-1" href="/characterAndTerrain">Character on Terrain</a>
+	<a class="btn m-1" href="/pointerlock">Pointer Controls</a>
+	<a class="btn m-1" href="/thirdperson">Third Person Controls remix</a>
 	<a class="btn m-1" href="/topdowncharacter">Top Down Controls</a>
+	<a class="btn m-1" href="/terrainWithObjects">terrain with scenery</a>
 </main>
