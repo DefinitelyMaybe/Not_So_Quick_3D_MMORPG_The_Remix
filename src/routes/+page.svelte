@@ -12,6 +12,6 @@
 	<a class="btn m-1" href="/characterAndTerrain">Character on Terrain</a>
 	<a class="btn m-1" href="/pointerlock">Pointer Controls</a>
 	<a class="btn m-1" href="/thirdperson">Third Person Controls remix</a>
-	<a class="btn m-1" href="/topdowncharacter">Top Down Controls</a>
-	<a class="btn m-1" href="/terrainWithObjects">terrain with scenery</a>
+	<a class="btn m-1" href="/topDownCharacter">Top Down Controls</a>
+	<a class="btn m-1" href="/terrainWithObjects">terrain with objects</a>
 </main>
