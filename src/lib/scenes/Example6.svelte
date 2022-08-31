@@ -1,9 +1,10 @@
 <script>
-	import { AmbientLight, DirectionalLight } from '@threlte/core';
+	import { AmbientLight, DirectionalLight, HemisphereLight, FogExp2 } from '@threlte/core';
 	import { CollisionGroups, Debug } from '@threlte/rapier';
 	import Door from '../Door.svelte';
 	import Player from '../characters/PlayerV4.svelte';
   import Terrain from "../TerrainV2.svelte";
+  import Background from "../SpaceBackground.svelte";
 
 	let cam = undefined;
 
@@ -17,7 +18,11 @@
 <Debug />
 
 <DirectionalLight shadow position={{ y: 20, x: 8, z: -3 }} />
+<HemisphereLight groundColor={'#424a75'} skyColor={'#6a88b5'} intensity={0.7}/>
 <AmbientLight intensity={0.2} />
+
+<Background />
+<FogExp2 color={'#89b2eb'} density={0.01} />
 
 <!--
 	The ground needs to be on both group 15 which is the group

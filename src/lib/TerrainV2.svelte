@@ -4,7 +4,6 @@
 	import { PlaneBufferGeometry, MeshStandardMaterial } from 'three';
 	import { DEG2RAD } from 'three/src/math/MathUtils';
 	import { createNoise2D } from 'simplex-noise';
-	import Background from "./SpaceBackground.svelte";
 
 	const noise2D = createNoise2D();
 	const persistence = 0;
@@ -56,7 +55,6 @@
   // Try only render chunks that are within the viewport?
 </script>
 
-<Background />
 <AutoColliders shape={'trimesh'}>
 	<Mesh
 		receiveShadow
