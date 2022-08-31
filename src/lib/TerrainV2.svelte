@@ -3,7 +3,10 @@
 	import { AutoColliders } from '@threlte/rapier';
 	import { PlaneBufferGeometry, MeshStandardMaterial } from 'three';
 	import { DEG2RAD } from 'three/src/math/MathUtils';
+	import { createEventDispatcher, onMount } from "svelte";
 	import { createNoise2D } from 'simplex-noise';
+
+	const dispatch = createEventDispatcher()
 
 	const noise2D = createNoise2D();
 	const persistence = 0;
@@ -53,6 +56,7 @@
 
   // TODO-DefinitelyMaybe: ViewportAware ness for terrain chunks
   // Try only render chunks that are within the viewport?
+	onMount(()=> dispatch('ready'))
 </script>
 
 <AutoColliders shape={'trimesh'}>
