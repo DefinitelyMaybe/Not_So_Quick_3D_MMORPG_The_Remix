@@ -24,7 +24,7 @@
 <Background />
 <FogExp2 color={'#89b2eb'} density={0.01} />
 
-<Player bind:cam position={{ x: 2, y: 15 }} />
+<Player bind:cam position={{ x: 2, y: 15, z:0 }} />
 <!--
 	The ground needs to be on both group 15 which is the group
 	to detect the groundedness of the player as well as on group
