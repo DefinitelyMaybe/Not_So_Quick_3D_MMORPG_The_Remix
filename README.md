@@ -1,6 +1,6 @@
 # Quick_3D_MMORPG
 
-This was a refactoring of simon's original project. It's now an attempt to re-remix the project using threlte. Wish me luck :)
+This was a refactoring of simon's original project. It's now just me following my own nose. Currently loving using threlte 🛠️⛏️⚔️
 
 # Branching off?
 

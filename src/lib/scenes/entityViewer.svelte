@@ -15,6 +15,7 @@
 
 	scene.add(new THREE.GridHelper(10,10))
 
+	export let currentEntity
 	const data = []
 
 	for (const obj in modelData) {
