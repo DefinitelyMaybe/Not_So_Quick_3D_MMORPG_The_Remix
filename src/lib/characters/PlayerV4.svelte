@@ -1,15 +1,16 @@
-<script>
+<script lang="ts">
 	import { Euler, Vector3, SphereBufferGeometry, MeshStandardMaterial } from 'three';
 	import { useFrame, useThrelte, PerspectiveCamera, Group, Mesh } from '@threlte/core';
+	import type { CollisionGroupsBitMask } from "@threlte/rapier";
 	import { RigidBody, CollisionGroups, Collider } from '@threlte/rapier';
 	import { GLTF, useGltfAnimations, HTML } from '@threlte/extras';
 	import { createEventDispatcher } from 'svelte';
 	import Controller from '../controls/ThirdPersonControls.svelte';
 
 	export let cam = undefined;
-	export let position = { x: 0, y: 0, z: 0 };
-	export let playerCollisionGroups = [0];
-	export let groundCollisionGroups = [15];
+	export let position:{x?:number, y?:number, z?:number} = { x: 0, y: 0, z: 0 };
+	export let playerCollisionGroups:CollisionGroupsBitMask = [0];
+	export let groundCollisionGroups:CollisionGroupsBitMask = [15];
 	export let radius = 0.3;
 	export let height = 1.7;
 	export let speed = 6;
