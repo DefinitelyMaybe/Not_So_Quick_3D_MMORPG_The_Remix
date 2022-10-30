@@ -2,61 +2,28 @@ export const characters = {
 	paladin: {
 		name: 'Paladin',
 		url: './characters/paladin.glb',
+		scale:1,
 		equip: {
 			rightHand: 'RightHandIndex1'
 		},
-		children: {
-			Character: {
-				scale: 0.06,
-				rotate: [0, 1, 0, 0]
-			}
-		},
-		nameOffset: 11,
-		physics: {}
+		height: 3,
 	},
 	sorceror: {
 		name: 'sorceror',
 		url: './characters/sorceror.glb',
-		equip: {
-			rightHand: 'RightHandIndex1'
-		},
-		children: {
-			Character: {
-				scale: 0.04,
-				rotate: [0, 1, 0, 0]
-			}
-		},
-		nameOffset: 10,
-		physics: {}
+		scale:1,
+		height: 3,
 	},
 	warrok: {
 		name: 'Warrok',
 		url: './characters/warrok.glb',
-		equip: {
-			rightHand: 'RightHandIndex1'
-		},
-		children: {
-			Character: {
-				scale: 0.08,
-				rotate: [0, 1, 0, 0]
-			}
-		},
-		nameOffset: 16,
-		physics: {}
+		scale: 1.5,
+		height: 5,
 	},
 	zombie: {
 		name: 'Zombie',
 		url: './characters/zombie-guy.glb',
-		equip: {
-			rightHand: 'RightHandIndex1'
-		},
-		children: {
-			Character: {
-				scale: 0.04,
-				rotate: [0, 1, 0, 0]
-			}
-		},
-		nameOffset: 8,
-		physics: {}
+		scale: 1,
+		height: 3,
 	}
 };

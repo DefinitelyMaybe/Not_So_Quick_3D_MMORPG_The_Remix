@@ -3,7 +3,7 @@
 	import { CollisionGroups, Debug } from '@threlte/rapier';
 	import Door from '../Door.svelte';
 	import Player from '../characters/PlayerV4.svelte';
-	import Terrain from '../TerrainV3.svelte';
+	import Terrain from '../TerrainV2.svelte';
 	import Background from '../SpaceBackground.svelte';
 
 	let cam = undefined;
@@ -38,6 +38,6 @@
 	All physically interactive stuff should be on group 0
 -->
 <CollisionGroups groups={[0]}>
-	<Player bind:cam position={{ x: 2, y: 3 }} />
-	<Door />
+	<Player bind:cam position={{ x: 2, y: 15 }} />
+	<Door position={{y:5}}/>
 </CollisionGroups>

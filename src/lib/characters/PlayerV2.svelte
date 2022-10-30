@@ -1,6 +1,6 @@
-<script>
+<script lang="ts">
 	import { GLTF, useGltfAnimations, HTML } from '@threlte/extras';
-	import { modelData } from '../../data/models/mod.js';
+	import { characters } from '../../data/models/mod.js';
 	import { Euler, Vector3 } from 'three';
 	import { DEG2RAD } from 'three/src/math/MathUtils.js';
 	import { Group, useFrame, useThrelte, PerspectiveCamera, OrbitControls } from '@threlte/core';
@@ -27,7 +27,7 @@
 		scene.rotation.set(camEuler.x, camEuler.y, camEuler.z);
 	}
 
-	const { name, url } = modelData.sorceror;
+	const { name, url } = characters.sorceror;
 	const { gltf, actions } = useGltfAnimations(({ actions }) => {
 		// actions could be: Armature|mixamo.com|Layer0, Attack, Dance, Death, Idle, Run, Walk
 		actions[currentAction]?.play();
