@@ -2,7 +2,7 @@
 	import { Canvas } from '@threlte/core';
   import { HTML } from "@threlte/extras";
 	import { World } from "@threlte/rapier";
-	import Scene from '$lib/scenes/Example6.svelte';
+	import Scene from '$lib/scenes/Example7.svelte';
 
   let gui
 </script>

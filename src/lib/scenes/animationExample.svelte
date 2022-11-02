@@ -10,10 +10,10 @@
 		OrbitControls
 	} from '@threlte/core';
 	import { useGltfAnimations, GLTF, HTML } from '@threlte/extras';
-	import { modelData } from '../../data/models/mod.js';
+	import { characters } from '../../data/models/mod.js';
 	import { buttonIdle, buttonWalk, buttonRun } from './animationExample.js';
 
-	const { name, url } = modelData.sorceror;
+	const { name, url } = characters.sorceror;
 	const { gltf, actions } = useGltfAnimations(({ actions }) => {
 		console.log(actions);
 		// Armature|mixamo.com|Layer0

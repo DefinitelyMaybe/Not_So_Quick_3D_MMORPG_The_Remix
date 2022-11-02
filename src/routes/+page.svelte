@@ -14,5 +14,5 @@
 	<a class="btn m-1" href="/thirdperson">Third Person Controls remix</a>
 	<a class="btn m-1" href="/topDownCharacter">Top Down Controls</a>
 	<a class="btn m-1" href="/texturedTerrain">Textured Terrain</a>
-	<a class="btn m-1" href="/example">Next Thing</a>
+	<a class="btn m-1" href="/card">Floating Card</a>
 </main>
