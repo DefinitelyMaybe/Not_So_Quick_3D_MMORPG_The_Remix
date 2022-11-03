@@ -15,4 +15,6 @@
 	<a class="btn m-1" href="/topDownCharacter">Top Down Controls</a>
 	<a class="btn m-1" href="/texturedTerrain">Textured Terrain</a>
 	<a class="btn m-1" href="/card">Floating Card</a>
+	<a class="btn m-1" href="/ai">AI possibilities</a>
+	<a class="btn m-1" href="/platformer">2D platformer</a>
 </main>
